@@ -36178,7 +36178,9 @@ var _constants = require("../nasa-images/constants");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const NasaImagePageItem = () => {
+const NasaImagePageItem = (0, _reactRouterDom.withRouter)(({
+  history
+}) => {
   const {
     id
   } = (0, _reactRouterDom.useParams)();
@@ -36204,14 +36206,30 @@ const NasaImagePageItem = () => {
     });
   };
 
-  console.log('nasaImageName', nasaImageName);
-
   if (nasaImageName === undefined) {
     updateNasaImage('');
     return null;
   }
 
   const onNameInputChange = e => updateNasaImage(e.target.value);
+
+  const onAddToFavoriteClick = () => dispatch({
+    type: _constants.ADD_TO_FAVORITE,
+    payload: {
+      [id]: {
+        imgUrl,
+        name: nasaImageName
+      }
+    }
+  });
+
+  const onDeleteClick = () => {
+    history.push('/main');
+    dispatch({
+      type: _constants.DELETE,
+      payload: id
+    });
+  };
 
   return _react.default.createElement("div", null, _react.default.createElement("div", null, _react.default.createElement(_reactRouterDom.Link, {
     to: "/main"
@@ -36222,9 +36240,12 @@ const NasaImagePageItem = () => {
     id: "nasa-image-item-name"
   })), _react.default.createElement(_imageRender.ImageRender, {
     imgSrc: imgUrl
-  }));
-};
-
+  }), _react.default.createElement("div", null, _react.default.createElement("button", {
+    onClick: onAddToFavoriteClick
+  }, " add to favorite"), _react.default.createElement("button", {
+    onClick: onDeleteClick
+  }, "Delete")));
+});
 exports.NasaImagePageItem = NasaImagePageItem;
 },{"react":"../node_modules/react/index.js","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js","../nasa-images/nasa-images-context":"nasa-images/nasa-images-context.js","../nasa-images/image-render":"nasa-images/image-render.js","../nasa-images/constants":"nasa-images/constants.js"}],"nasa-images/nasa-image-local-storage.js":[function(require,module,exports) {
 "use strict";
@@ -38393,7 +38414,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57660" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60277" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
