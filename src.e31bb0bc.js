@@ -36081,6 +36081,8 @@ exports.NasaImagesPageList = void 0;
 
 var _react = _interopRequireWildcard(require("react"));
 
+var _reactRouterDom = require("react-router-dom");
+
 var _nasaImagesContext = require("../nasa-images/nasa-images-context");
 
 var _constants = require("../nasa-images/constants");
@@ -36141,7 +36143,9 @@ const NasaImagesPageList = () => {
     });
   };
 
-  return _react.default.createElement(_react.Fragment, null, _react.default.createElement("div", null, _react.default.createElement("span", null, "Search base on image name "), _react.default.createElement("input", {
+  return _react.default.createElement(_react.Fragment, null, _react.default.createElement("div", null, _react.default.createElement("div", null, _react.default.createElement(_reactRouterDom.Link, {
+    to: "/main/favorite"
+  }, "Favorite")), _react.default.createElement("span", null, "Search base on image name "), _react.default.createElement("input", {
     type: "text",
     value: searchText,
     onChange: onSearchInputChange,
@@ -36158,7 +36162,7 @@ function inputThreshold(thresholdTime, callback) {
   clearTimeout(timeOutNum);
   timeOutNum = setTimeout(() => callback(), thresholdTime);
 }
-},{"react":"../node_modules/react/index.js","../nasa-images/nasa-images-context":"nasa-images/nasa-images-context.js","../nasa-images/constants":"nasa-images/constants.js","../nasa-images/nasa-image-item":"nasa-images/nasa-image-item.js","../nasa-images/nasa-image-searcher":"nasa-images/nasa-image-searcher.js","./nasa-images-page-list.scss":"pages/nasa-images-page-list.scss"}],"pages/nasa-image-page-item.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js","../nasa-images/nasa-images-context":"nasa-images/nasa-images-context.js","../nasa-images/constants":"nasa-images/constants.js","../nasa-images/nasa-image-item":"nasa-images/nasa-image-item.js","../nasa-images/nasa-image-searcher":"nasa-images/nasa-image-searcher.js","./nasa-images-page-list.scss":"pages/nasa-images-page-list.scss"}],"pages/nasa-image-page-item.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -36247,7 +36251,45 @@ const NasaImagePageItem = (0, _reactRouterDom.withRouter)(({
   }, "Delete")));
 });
 exports.NasaImagePageItem = NasaImagePageItem;
-},{"react":"../node_modules/react/index.js","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js","../nasa-images/nasa-images-context":"nasa-images/nasa-images-context.js","../nasa-images/image-render":"nasa-images/image-render.js","../nasa-images/constants":"nasa-images/constants.js"}],"nasa-images/nasa-image-local-storage.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js","../nasa-images/nasa-images-context":"nasa-images/nasa-images-context.js","../nasa-images/image-render":"nasa-images/image-render.js","../nasa-images/constants":"nasa-images/constants.js"}],"pages/nasa-images-page-favorite.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.NasaImagesPageFavorite = void 0;
+
+var _react = _interopRequireWildcard(require("react"));
+
+var _reactRouterDom = require("react-router-dom");
+
+var _nasaImageItem = require("../nasa-images/nasa-image-item");
+
+var _nasaImagesContext = require("../nasa-images/nasa-images-context");
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+const NasaImagesPageFavorite = () => {
+  const [state] = (0, _nasaImagesContext.useNasaImagesContext)();
+  const {
+    favoriteItems
+  } = state;
+
+  const renderNasaItems = nasaItems => Object.keys(nasaItems).map(itemKey => _react.default.createElement(_nasaImageItem.NasaImageItem, {
+    key: itemKey,
+    id: itemKey,
+    item: nasaItems[itemKey]
+  }));
+
+  return _react.default.createElement(_react.Fragment, null, _react.default.createElement("div", null, _react.default.createElement(_reactRouterDom.Link, {
+    to: "/main"
+  }, "Back")), renderNasaItems(favoriteItems));
+};
+
+exports.NasaImagesPageFavorite = NasaImagesPageFavorite;
+},{"react":"../node_modules/react/index.js","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js","../nasa-images/nasa-image-item":"nasa-images/nasa-image-item.js","../nasa-images/nasa-images-context":"nasa-images/nasa-images-context.js"}],"nasa-images/nasa-image-local-storage.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -36386,6 +36428,8 @@ var _nasaImagesPageList = require("./pages/nasa-images-page-list");
 
 var _nasaImagePageItem = require("./pages/nasa-image-page-item");
 
+var _nasaImagesPageFavorite = require("./pages/nasa-images-page-favorite");
+
 var _nasaImagesContext = require("./nasa-images/nasa-images-context");
 
 var _nasaImagesHibernating = require("./nasa-images/nasa-images-hibernating");
@@ -36399,11 +36443,13 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 const Main = () => _react.default.createElement("div", null, _react.default.createElement(_header.Header, null), _react.default.createElement(_nasaImagesContext.NasaImagesProvider, null, _react.default.createElement(_nasaImagesHibernating.NasaImageHibernating, null), _react.default.createElement(_nasaImagesHydrating.NasaImageHydrating, null), _react.default.createElement(_nasaImageHydratingSync.NasaImageHydratingSync, null, _react.default.createElement(_reactRouterDom.Switch, null, _react.default.createElement(_reactRouterDom.Route, {
   path: "/main/nasa-images/:id"
 }, _react.default.createElement(_nasaImagePageItem.NasaImagePageItem, null)), _react.default.createElement(_reactRouterDom.Route, {
+  path: "/main/favorite"
+}, _react.default.createElement(_nasaImagesPageFavorite.NasaImagesPageFavorite, null)), _react.default.createElement(_reactRouterDom.Route, {
   path: "/main"
 }, _react.default.createElement(_nasaImagesPageList.NasaImagesPageList, null))))));
 
 exports.Main = Main;
-},{"react":"../node_modules/react/index.js","./header":"header.js","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js","./pages/nasa-images-page-list":"pages/nasa-images-page-list.js","./pages/nasa-image-page-item":"pages/nasa-image-page-item.js","./nasa-images/nasa-images-context":"nasa-images/nasa-images-context.js","./nasa-images/nasa-images-hibernating":"nasa-images/nasa-images-hibernating.js","./nasa-images/nasa-images-hydrating":"nasa-images/nasa-images-hydrating.js","./nasa-images/nasa-image-hydrating-sync":"nasa-images/nasa-image-hydrating-sync.js"}],"app.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","./header":"header.js","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js","./pages/nasa-images-page-list":"pages/nasa-images-page-list.js","./pages/nasa-image-page-item":"pages/nasa-image-page-item.js","./pages/nasa-images-page-favorite":"pages/nasa-images-page-favorite.js","./nasa-images/nasa-images-context":"nasa-images/nasa-images-context.js","./nasa-images/nasa-images-hibernating":"nasa-images/nasa-images-hibernating.js","./nasa-images/nasa-images-hydrating":"nasa-images/nasa-images-hydrating.js","./nasa-images/nasa-image-hydrating-sync":"nasa-images/nasa-image-hydrating-sync.js"}],"app.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -38414,7 +38460,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60277" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53586" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
