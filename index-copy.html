@@ -1,0 +1,38 @@
+<!-- Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT License. -->
+<!-- This file shows how to design a first-run page that provides a welcome screen to the user about the features of the add-in. -->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Contoso Task Pane Add-in</title>
+
+    <!-- Office JavaScript API -->
+    <script type="text/javascript" src="https://appsforoffice.microsoft.com/lib/1.1/hosted/office.js"></script>
+
+    <!-- For more information on Fluent UI, visit https://developer.microsoft.com/fluentui#/. -->
+    <link
+      rel="stylesheet"
+      href="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-core/9.6.1/css/fabric.css"
+    />
+
+    <!-- Template styles -->
+    <link href="b4c8b9b8da388f5f1eb8.css" rel="stylesheet" type="text/css" />
+  <script defer src="polyfill.js"></script><script defer src="taskpane.js"></script></head>
+
+  <body class="ms-font-m ms-welcome ms-Fabric">
+    <header class="ms-welcome__header ms-bgColor-neutralLighter">
+      <h3 class="ms-font-l">Office API bugs</h3>
+    </header>
+    <main id="app-body" class="ms-welcome__main">
+      <section>
+        <h3 class="ms-font-l"><b>Ipad bug:</b> insert image to Word document</h3>
+        <div role="button" id="run" class="ms-welcome__action ms-Button ms-Button--hero ms-font-xl">
+          <button>Run</button>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
