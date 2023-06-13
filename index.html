@@ -4,35 +4,177 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Contoso Task Pane Add-in</title>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Select Build Demo</title>
+        <link
+            rel="stylesheet"
+            href="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-core/10.0.0/css/fabric.min.css"
+        />
 
-    <!-- Office JavaScript API -->
-    <script type="text/javascript" src="https://appsforoffice.microsoft.com/lib/1.1/hosted/office.js"></script>
-
-    <!-- For more information on Fluent UI, visit https://developer.microsoft.com/fluentui#/. -->
-    <link
-      rel="stylesheet"
-      href="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-core/9.6.1/css/fabric.css"
-    />
-
-    <!-- Template styles -->
-    <link href="b4c8b9b8da388f5f1eb8.css" rel="stylesheet" type="text/css" />
-  <script defer src="polyfill.js"></script><script defer src="taskpane.js"></script></head>
+        <style>
+            .dropbtn {
+              background-color: #04AA6D;
+              color: white;
+              padding: 16px;
+              font-size: 16px;
+              border: none;
+              cursor: pointer;
+            }
+            
+            .dropbtn:hover, .dropbtn:focus {
+              background-color: #3e8e41;
+            }
+            
+            #myInput {
+              box-sizing: border-box;
+              background-image: url('searchicon.png');
+              background-position: 14px 12px;
+              background-repeat: no-repeat;
+              font-size: 16px;
+              padding: 14px 20px 12px 45px;
+              border: none;
+              border-bottom: 1px solid #ddd;
+            }
+            
+            #myInput:focus {outline: 3px solid #ddd;}
+            
+            .dropdown {
+                margin: 10px 0;
+              position: relative;
+              display: inline-block;
+            }
+            
+            .dropdown-content {
+              display: none;
+              position: absolute;
+              background-color: #f6f6f6;
+              min-width: 230px;
+              overflow: auto;
+              border: 1px solid #ddd;
+              z-index: 1;
+              max-height: 500px;
+            }
+            
+            .dropdown-content a {
+              color: black;
+              padding: 12px 16px;
+              text-decoration: none;
+              display: block;
+            }
+            
+            .dropdown a:hover {background-color: #ddd;}
+            
+            .show {display: block;}
+        </style>
+    </head>
 
   <body class="ms-font-m ms-welcome ms-Fabric">
     <header class="ms-welcome__header ms-bgColor-neutralLighter">
-      <h3 class="ms-font-l">Office API bugs</h3>
+      <h3 class="ms-font-l">Select Build Demo</h3>
     </header>
-    <main id="app-body" class="ms-welcome__main">
-      <section>
-        <h3 class="ms-font-l"><b>Ipad bug:</b> insert image to Word document</h3>
-        <div role="button" id="run" class="ms-welcome__action ms-Button ms-Button--hero ms-font-xl">
-          <button>Run</button>
+    <div>
+        <div class="dropdown">
+            <div>
+                <button onclick="dropdownFunction('build-dropdown')" class="dropbtn">Open/Close Build Dropdown</button>
+                <span id="selected-build-item">Selected Item: </span>
+            </div>
+            <div id="build-dropdown" class="dropdown-content">
+                <input type="text" placeholder="Search.." id="build-input" onkeyup="filterItems('build-input', 'build-dropdown')">
+                <a onClick="selectBuildItem('About')" href="#">About</a>
+                <a onClick="selectBuildItem('Base')"  href="#">Base</a>
+                <a onClick="selectBuildItem('Blog')"  href="#">Blog</a>
+                <a onClick="selectBuildItem('Contact')"  href="#">Contact</a>
+                <a onClick="selectBuildItem('Custom')"  href="#">Custom</a>
+                <a onClick="selectBuildItem('Support')"  href="#">Support</a>
+                <a onClick="selectBuildItem('Tools')"  href="#">Tools</a>
+            </div>
         </div>
-      </section>
-    </main>
+    </div>
+
+    <div>
+        <div class="dropdown">
+
+            <button onclick="dropdownFunction('config-dropdown')" class="dropbtn">Open/Close Config Dropdown</button>
+            <span id="selected-config-item">Selected Item: </span>
+
+            <div id="config-dropdown" class="dropdown-content">
+                <input type="text" placeholder="Search.." id="build-input" onkeyup="filterItems('build-input', 'config-dropdown')">
+                <a onClick="selectConfigItem('backend-staging')"  href="#base">backend-staging</a>
+                <a onClick="selectConfigItem('dev')"  href="#">dev</a>
+                <a onClick="selectConfigItem('test')" href="#">test</a>
+                <a onClick="selectConfigItem('prod')" href="#">prod</a>
+                <a onClick="selectConfigItem('test-officejsbeta')"  href="#">test-officejsbeta</a>
+            </div>
+        </div>
+    </div>
+      <script>
+        const items = [
+            'mail-responder-17007-pr-2583',
+            'admin-center-17007-pr-2583',
+            'mail-signature-editor-17007-pr-2583',
+            'office-addins-16985-pr-2598',
+            'office-addins-16985-pr-1231',
+            'office-addins-16985-pr-1232',
+            'office-addins-16985-pr-1233',
+            'office-addins-16985-pr-1234',
+            'office-addins-16985-pr-1235',
+            'office-addins-16985-pr-1236',
+            'office-addins-16985-pr-1237',
+            'office-addins-16985-pr-1238',
+            'office-addins-16985-pr-1239',
+        ];
+
+        const buildContainer = document.getElementById('build-dropdown');
+
+        console.log('buildContainer', buildContainer);
+        items.forEach((name) => {
+                    const childNode = document.createElement("a");
+                    childNode.href = '#';
+                    childNode.innerHTML = name;
+                    childNode.onclick = () => selectBuildItem(name);
+                    buildContainer.append(childNode);
+                });
+
+        function dropdownFunction(id) {
+          document.getElementById(id).classList.toggle("show");
+        }
+
+        function selectBuildItem(selectedId) {
+            const selectedItemEle = document.getElementById('selected-build-item');
+
+            selectedItemEle.innerHTML = `Selected Item: ${selectedId}`;
+
+            document.getElementById("build-dropdown").classList.toggle("show");
+        }
+
+        function selectConfigItem(selectedId) {
+            const selectedItemEle = document.getElementById('selected-config-item');
+
+            selectedItemEle.innerHTML = `Selected Item: ${selectedId}`;
+
+            document.getElementById("config-dropdown").classList.toggle("show");
+        }
+
+        function filterItems(inputId, containerId) {
+            const input = document.getElementById(inputId);
+
+            const filterText = input.value.toLowerCase();
+
+            const container = document.getElementById(containerId);
+
+            const items = container.getElementsByTagName("a");
+
+            for(let item of items) {
+                const itemValue = (item.textContent || item.innerText).toLowerCase();
+
+                const displayItem = itemValue.includes(filterText);
+
+                item.style.display = displayItem ? "auto" : "none";
+            }
+        }
+
+        </script>
   </body>
 </html>
