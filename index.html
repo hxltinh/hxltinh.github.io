@@ -14,64 +14,9 @@
         />
 
         <style>
-            .dropbtn {
-              background-color: #afafaf;
-              color: #fafafa;
-              padding: 5px;
-              font-size: 16px;
-              border: none;
-              cursor: pointer;
-              width: 200px;
+            .build-selection-input {
+                width: 250px;
             }
-            
-            .dropbtn:hover, .dropbtn:focus {
-              background-color: #5f5f5f;
-            }
-            
-            #myInput {
-              box-sizing: border-box;
-              background-image: url('searchicon.png');
-              background-position: 14px 12px;
-              background-repeat: no-repeat;
-              font-size: 16px;
-              padding: 14px 20px 12px 45px;
-              border: none;
-              border-bottom: 1px solid #ddd;
-            }
-            
-            #myInput:focus {outline: 3px solid #ddd;}
-            
-            .dropdown {
-                margin: 10px 0;
-              position: relative;
-              display: inline-block;
-            }
-            
-            .dropdown-content {
-              display: none;
-              position: absolute;
-              background-color: #f6f6f6;
-              min-width: 230px;
-              border: 1px solid #ddd;
-              z-index: 1;
-              
-            }
-
-            .dropdown-items {
-                overflow: auto;
-                max-height: 400px;
-            }
-            
-            .dropdown-content a {
-              color: black;
-              padding: 12px 16px;
-              text-decoration: none;
-              display: block;
-            }
-            
-            .dropdown a:hover {background-color: #ddd;}
-            
-            .show {display: block;}
         </style>
     </head>
 
@@ -80,38 +25,20 @@
       <h3 class="ms-font-l">Select Build Demo</h3>
     </header>
     <div>
-        <div class="dropdown">
-            <div>
-                <button id="build-button" onclick="toggleDropdownPanel('build-button', 'build-dropdown', 'Build')" class="dropbtn">Open Build Dropdown</button>
-                <span id="selected-build-item">Selected Item: </span>
-            </div>
-            <div id="build-dropdown" class="dropdown-content">
-                <input type="text" placeholder="Search.." id="build-input" onkeyup="filterBuildItems('build-input', 'build-dropdown')">
-                <div id="items-container" class="dropdown-items">
-                    
-                </div>
-                
-            </div>
-        </div>
+        <input list="build-selection-datalist" name="build-selection" id="build-selection-input" class="build-selection-input">
+        <datalist id="build-selection-datalist"></datalist>
+
+        <button onclick="clearBuildSelection()">Clear</button>
+
     </div>
 
     <div>
-        <div class="dropdown">
-
-            <button id="config-button" onclick="toggleDropdownPanel('config-button', 'config-dropdown', 'Config')" class="dropbtn">Open Config Dropdown</button>
-            <span id="selected-config-item">Selected Item: </span>
-
-            <div id="config-dropdown" class="dropdown-content">
-                <div id="items-container" class="dropdown-items">
-                    <a onClick="selectConfigItem('backend-staging')"  href="#base">backend-staging</a>
-                    <a onClick="selectConfigItem('dev')"  href="#">dev</a>
-                    <a onClick="selectConfigItem('test')" href="#">test</a>
-                    <a onClick="selectConfigItem('prod')" href="#">prod</a>
-                    <a onClick="selectConfigItem('test-officejsbeta')"  href="#">test-officejsbeta</a>
-                </div>
-                
-            </div>
-        </div>
+        <select aria-label="Configs" id="config" onchange="setConfig()">
+            <option>config 1</option>
+            <option>config 2</option>
+            <option>config 3</option>
+            <option>config 4</option>
+        </select>
     </div>
       <script>
         const items = [
@@ -160,65 +87,67 @@
             'office-addins-16985-pr-1269',
         ];
 
-        const buildContainer = document.getElementById('items-container');
+        const buildContainer = document.getElementById('build-selection-datalist');
 
         items.forEach((name) => {
-                    const childNode = document.createElement("a");
-                    childNode.href = '#';
-                    childNode.innerHTML = name;
-                    childNode.onclick = () => selectBuildItem(name);
+                    const childNode = document.createElement("option");
+                    childNode.value = name;
                     buildContainer.append(childNode);
                 });
 
 
-        function toggleDropdownPanel(buttonId, dropDownId, type) {
-            const ele = document.getElementById(dropDownId);
-            ele.classList.contains('show') ? hideDropdownPanel(buttonId, dropDownId, type) : showDropdownPanel(buttonId, dropDownId, type);
+        function clearBuildSelection() {
+            console.log('clear button');
+            document.getElementById('build-selection-input').value = '';
         }
+        // function toggleDropdownPanel(buttonId, dropDownId, type) {
+        //     const ele = document.getElementById(dropDownId);
+        //     ele.classList.contains('show') ? hideDropdownPanel(buttonId, dropDownId, type) : showDropdownPanel(buttonId, dropDownId, type);
+        // }
 
-        function showDropdownPanel(buttonId, dropDownId, type) {
-            document.getElementById(buttonId).innerHTML = `Close ${type} Dropdown`;
-            document.getElementById(dropDownId).classList.add('show');
-        }
+        // function showDropdownPanel(buttonId, dropDownId, type) {
+        //     document.getElementById(buttonId).innerHTML = `Close ${type} Dropdown`;
+        //     document.getElementById(dropDownId).classList.add('show');
+        // }
 
-        function hideDropdownPanel(buttonId, dropDownId, type) {
-            document.getElementById(buttonId).innerHTML = `Open ${type} Dropdown`;
-            document.getElementById(dropDownId).classList.remove('show');
-        }
+        // function hideDropdownPanel(buttonId, dropDownId, type) {
+        //     document.getElementById(buttonId).innerHTML = `Open ${type} Dropdown`;
+        //     document.getElementById(dropDownId).classList.remove('show');
+        // }
 
-        function selectBuildItem(selectedId) {
-            const selectedItemEle = document.getElementById('selected-build-item');
+        // function selectBuildItem(selectedId) {
+        //     const selectedItemEle = document.getElementById('selected-build-item');
 
-            selectedItemEle.innerHTML = `Selected Item: ${selectedId}`;
+        //     selectedItemEle.innerHTML = `Selected Item: ${selectedId}`;
 
-            hideDropdownPanel('build-button', 'build-dropdown', 'Build');
-        }
+        //     hideDropdownPanel('build-button', 'build-dropdown', 'Build');
+        // }
 
-        function selectConfigItem(selectedId) {
-            const selectedItemEle = document.getElementById('selected-config-item');
+        // function selectConfigItem(selectedId) {
+        //     const selectedItemEle = document.getElementById('selected-config-item');
 
-            selectedItemEle.innerHTML = `Selected Item: ${selectedId}`;
+        //     selectedItemEle.innerHTML = `Selected Item: ${selectedId}`;
 
-            hideDropdownPanel('config-button', 'config-dropdown', 'Config');
-        }
+        //     hideDropdownPanel('config-button', 'config-dropdown', 'Config');
+        // }
 
-        function filterBuildItems(inputId, containerId) {
-            const input = document.getElementById('build-input');
+        // function filterBuildItems(inputId, containerId) {
+        //     const input = document.getElementById('build-input');
 
-            const filterText = input.value.toLowerCase();
+        //     const filterText = input.value.toLowerCase();
 
-            const container = document.getElementById('items-container');
+        //     const container = document.getElementById('items-container');
 
-            const items = container.getElementsByTagName("a");
+        //     const items = container.getElementsByTagName("a");
 
-            for(let item of items) {
-                const itemValue = (item.textContent || item.innerText).toLowerCase();
+        //     for(let item of items) {
+        //         const itemValue = (item.textContent || item.innerText).toLowerCase();
 
-                const displayItem = itemValue.includes(filterText);
+        //         const displayItem = itemValue.includes(filterText);
 
-                item.style.display = displayItem ? "auto" : "none";
-            }
-        }
+        //         item.style.display = displayItem ? "auto" : "none";
+        //     }
+        // }
 
         </script>
   </body>
